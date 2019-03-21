@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
+import Board from "./containers/Board/Board";
 
 class App extends Component {
     render() {
-        return (
-            <div className="App">
-
-            </div>
-        );
+        return <Board/>;
     }
 }
 
