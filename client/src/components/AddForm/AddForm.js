@@ -21,15 +21,13 @@ class AddForm extends Component {
 
     submitFormHandler = event => {
         event.preventDefault();
-        console.log(this.state);
-
         const formData = new FormData();
 
         Object.keys(this.state).forEach(key => {
             formData.append(key, this.state[key]);
         });
 
-        this.props.onSubmit(formData);
+        this.props.onSubmit(formData).then(this.props.refreshList);
     };
 
     render() {

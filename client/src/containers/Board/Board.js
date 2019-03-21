@@ -3,29 +3,20 @@ import BoardItem from "../../components/BoardItem/BoardItem";
 import AddForm from "../../components/AddForm/AddForm";
 import Modal from "../../components/UI/Modal/Modal";
 import {connect} from "react-redux";
-import {createBoardItem, fetchBoard} from "../../store/actions";
+import {createBoardItem, fetchBoard, toggleModal} from "../../store/actions";
 
 class Board extends Component {
-    state = {
-        showModal: false
-    };
 
     componentDidMount() {
         this.props.fetchBoard();
     }
-
-    toggleModal = () => {
-        this.setState({
-            showModal: !this.state.showModal
-        })
-    };
 
     render() {
         return (
             <div className="container py-3">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                     <h2>Board</h2>
-                    <button onClick={this.toggleModal} className="btn btn-info">Add new item</button>
+                    <button onClick={this.props.toggleModal} className="btn btn-info">Add new item</button>
                 </div>
                 {
                     this.props.boardItems.map(item => (
@@ -39,10 +30,13 @@ class Board extends Component {
                 }
 
                 <Modal
-                    show={this.state.showModal}
-                    close={this.toggleModal}
+                    show={this.props.showModal}
+                    close={this.props.toggleModal}
                 >
-                    <AddForm onSubmit={this.props.createBoardItem}/>
+                    <AddForm
+                        onSubmit={this.props.createBoardItem}
+                        refreshList={this.props.fetchBoard}
+                    />
                 </Modal>
             </div>
         );
@@ -51,11 +45,13 @@ class Board extends Component {
 
 const mapStateToProps = state => ({
     boardItems: state.boardItems,
+    showModal: state.showModal
 });
 
 const mapDispatchToProps = dispatch => ({
     fetchBoard: () => dispatch(fetchBoard()),
-    createBoardItem: boardItem => dispatch(createBoardItem(boardItem))
+    createBoardItem: boardItem => dispatch(createBoardItem(boardItem)),
+    toggleModal: () => dispatch(toggleModal())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);

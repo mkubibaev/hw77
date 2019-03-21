@@ -1,7 +1,8 @@
-import {FETCH_BOARD_SUCCESS} from "./actions";
+import {CREATE_BOARDITEM_SUCCESS, FETCH_BOARD_SUCCESS, TOGGLE_MODAL} from "./actions";
 
 const initialState = {
-    boardItems: []
+    boardItems: [],
+    showModal: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -10,6 +11,18 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 boardItems: action.boardItems,
+            };
+
+        case TOGGLE_MODAL:
+            return {
+                ...state,
+                showModal: !state.showModal
+            };
+
+        case CREATE_BOARDITEM_SUCCESS:
+            return {
+                ...state,
+                showModal: false,
             };
 
         default:
