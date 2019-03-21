@@ -29,3 +29,8 @@ body {
 .board-item__text {
   flex-grow: 1;
 }
+
+.modal {
+  display: block;
+  background: rgba(0,0,0,.5);
+}
