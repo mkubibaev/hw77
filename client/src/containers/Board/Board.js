@@ -2,11 +2,17 @@ import React, {Component} from 'react';
 import BoardItem from "../../components/BoardItem/BoardItem";
 import AddForm from "../../components/AddForm/AddForm";
 import Modal from "../../components/UI/Modal/Modal";
+import {connect} from "react-redux";
+import {createBoardItem, fetchBoard} from "../../store/actions";
 
 class Board extends Component {
     state = {
         showModal: false
     };
+
+    componentDidMount() {
+        this.props.fetchBoard();
+    }
 
     toggleModal = () => {
         this.setState({
@@ -21,20 +27,35 @@ class Board extends Component {
                     <h2>Board</h2>
                     <button onClick={this.toggleModal} className="btn btn-info">Add new item</button>
                 </div>
-
-                <BoardItem/>
-                <BoardItem/>
-
+                {
+                    this.props.boardItems.map(item => (
+                        <BoardItem
+                            key={item.id}
+                            message={item.message}
+                            author={item.author}
+                            image={item.image}
+                        />
+                    ))
+                }
 
                 <Modal
                     show={this.state.showModal}
                     close={this.toggleModal}
                 >
-                    <AddForm/>
+                    <AddForm onSubmit={this.props.createBoardItem}/>
                 </Modal>
             </div>
         );
     }
 }
 
-export default Board;
+const mapStateToProps = state => ({
+    boardItems: state.boardItems,
+});
+
+const mapDispatchToProps = dispatch => ({
+    fetchBoard: () => dispatch(fetchBoard()),
+    createBoardItem: boardItem => dispatch(createBoardItem(boardItem))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

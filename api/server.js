@@ -10,6 +10,7 @@ fileDb.init();
 app.use(express.json());
 app.use(cors());
 app.use('/board', board);
+app.use(express.static('public'))
 
 app.listen(port, () => {
     console.log(`Server started on ${port} port`);

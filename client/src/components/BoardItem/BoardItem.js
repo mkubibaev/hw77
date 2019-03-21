@@ -1,14 +1,18 @@
 import React from 'react';
+import {apiURL} from "../../constants";
 
-const BoardItem = () => {
+const BoardItem = props => {
     return (
         <div className="board-item">
-            <div className="board-item__img">
-                <img src="" alt=""/>
-            </div>
+            {props.image !== 'null'
+                ? <div className="board-item__img">
+                    <img src={`${apiURL}/uploads/${props.image}`} alt=""/>
+                </div>
+                : null
+            }
             <div className="board-item__text">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, ex.</p>
-                <span className="text-secondary">Anonymous</span>
+                <p>{props.message}</p>
+                <span className="text-secondary">{props.author}</span>
             </div>
         </div>
     );

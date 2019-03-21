@@ -15,8 +15,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({storage});
-
-
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -24,15 +22,23 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', upload.single('image'), (req, res) => {
-    const boardItem = req.body;
+    if (req.body.message !== '') {
+        const boardItem = req.body;
+        boardItem.id = nanoid();
+    
+        if(req.body.author === '') {
+            boardItem.author = 'Anonymous';
+        }
 
-    if(req.file) {
-        boardItem.image = req.file.fieldname;
-    }
-
-    db.addItem(boardItem);
-
-    res.send({message: 'OK'});
+        if(req.file) {
+            boardItem.image = req.file.filename;
+        }
+    
+        db.addItem(boardItem);
+        res.send({message: 'OK'});
+    } else {
+        res.status(400).send({error: 'Messafe text is required!'});
+    } 
 });
 
 module.exports = router;
